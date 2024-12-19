@@ -103,69 +103,92 @@
         <div id="dice1" class="dice-container1">⚀</div>
         <button id="rollButton1">Roll the Dice</button>
         <div id="output1"></div>
+        <div id="output2">
+            <h2 id="result">Roll both dice to see the winner!</h2>
+        </div>
     </div>
 
 
     <script>
         // Function to generate random dice rolls
-        function rollDice() {
-            return Math.floor(Math.random() * 6) + 1; // Random number between 1 and 6
+function rollDice() {
+    return Math.floor(Math.random() * 6) + 1; // Random number between 1 and 6
+}
+
+// Function to update the dice face and display result for dice 1
+function handleRoll() {
+    const diceNumber = rollDice();
+    const diceElement = document.getElementById("dice");
+    const outputElement = document.getElementById("output");
+
+    // Array of dice faces
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+    // Add a shake animation temporarily
+    diceElement.style.animation = "shake 0.5s";
+    setTimeout(() => {
+        diceElement.style.animation = "";
+        diceElement.textContent = diceFaces[diceNumber - 1]; // Update dice face
+        outputElement.textContent = `You rolled a ${diceNumber}! 🎉`;
+        compareDice() // Call compare function after updating dice 1
+    }, 500);
+    // Store result for comparison
+    window.dice1Result = diceNumber;
+}
+
+// Function to update the dice face and display result for dice 2
+function handleRoll1() {
+    const diceNumber = rollDice();
+    const diceElement = document.getElementById("dice1");
+    const outputElement = document.getElementById("output1");
+
+    // Array of dice faces
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+    // Add a shake animation temporarily
+    diceElement.style.animation = "shake 0.5s";
+    setTimeout(() => {
+        diceElement.style.animation = "";
+        diceElement.textContent = diceFaces[diceNumber - 1]; // Update dice face
+        outputElement.textContent = `You rolled a ${diceNumber}! 🎉`;
+        compareDice() // Call compare function after updating dice 2
+    }, 500);
+
+    // Store result for comparison
+    window.dice2Result = diceNumber;
+}
+
+// Function to compare both dice and display the winner or loser
+function compareDice() {
+    const resultElement = document.getElementById("result");
+    if (typeof window.dice1Result !== "undefined" && typeof window.dice2Result !== "undefined") {
+        if (window.dice1Result > window.dice2Result) {
+            resultElement.textContent = "Player 1 wins! 🏆";
+        } else if (window.dice1Result < window.dice2Result) {
+            resultElement.textContent = "Player 2 wins! 🏆";
+        } else {
+            resultElement.textContent = "It's a draw! 🤝";
         }
+    }
+}
 
-        // Function to update the dice face and display result
-        function handleRoll() {
-            const diceNumber = rollDice();
-            const diceElement = document.getElementById("dice");
-            const outputElement = document.getElementById("output");
+// Add event listeners
+document.getElementById("rollButton").addEventListener("click", handleRoll);
+document.getElementById("rollButton1").addEventListener("click", handleRoll1);
 
-            // Array of dice faces
-            const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+// Shake Animation Keyframes
+const style = document.createElement("style");
+style.textContent = `
+    @keyframes shake {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(10deg); }
+        50% { transform: rotate(-10deg); }
+        75% { transform: rotate(10deg); }
+        100% { transform: rotate(0deg); }
+    }
+`;
+document.head.appendChild(style);
 
-            // Add a shake animation temporarily
-            diceElement.style.animation = "shake 0.5s";
-            setTimeout(() => {
-                diceElement.style.animation = "";
-                diceElement.textContent = diceFaces[diceNumber - 1]; // Update dice face
-                outputElement.textContent = `You rolled a ${diceNumber}! 🎉`;
-            }, 500);
-        }
-
-
-        // Function to update the dice face and display result
-        function handleRoll1() {
-            const diceNumber = rollDice();
-            const diceElement = document.getElementById("dice1");
-            const outputElement = document.getElementById("output1");
-
-            // Array of dice faces
-            const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-
-            // Add a shake animation temporarily
-            diceElement.style.animation = "shake 0.5s";
-            setTimeout(() => {
-                diceElement.style.animation = "";
-                diceElement.textContent = diceFaces[diceNumber - 1]; // Update dice face
-                outputElement.textContent = `You rolled a ${diceNumber}! 🎉`;
-            }, 500);
-        }
-
-
-        // Add event listener
-        document.getElementById("rollButton").addEventListener("click", handleRoll);
-        document.getElementById("rollButton1").addEventListener("click", handleRoll1);
-
-        // Shake Animation Keyframes
-        const style = document.createElement("style");
-        style.textContent = `
-            @keyframes shake {
-                0% { transform: rotate(0deg); }
-                25% { transform: rotate(10deg); }
-                50% { transform: rotate(-10deg); }
-                75% { transform: rotate(10deg); }
-                100% { transform: rotate(0deg); }
-            }
-        `;  
-        document.head.appendChild(style);
     </script>
 </body>
 </html>

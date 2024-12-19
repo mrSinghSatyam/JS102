@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 255, 255, 0.2);
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #00ffff;
+            text-shadow: 0 0 8px #00ffff;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1rem;
+            width: 100px;
+            margin: 10px 0;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            background-color: #121212;
+            color: #00ffff;
+            text-align: center;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #121212;
+            background-color: #00ffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ffff;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #00ff00;
+        }
+        .output.lost {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guess the Number</h1>
+        <label for="range">Range (1 to N):</label><br>
+        <input type="number" id="range" min="10" max="100" value="20"><br>
+        <label for="guess">Your Guess:</label><br>
+        <input type="number" id="guess" min="1"><br>
+        <button onclick="submitGuess()">Submit Guess</button>
+        <button onclick="resetGame()" style="background-color: #ff0000; color: #fff;">Reset</button>
+        <div class="output" id="result">Start guessing...</div>
+    </div>
+
+    <script>
+        let randomNumber = 0;
+        let range = 20;
+
+        // Generate a random number
+        function generateRandomNumber() {
+            range = parseInt(document.getElementById('range').value);
+            randomNumber = Math.floor(Math.random() * range) + 1;
+            console.log("Random Number:", randomNumber); // For debugging
+        }
+
+        // Initialize game
+        generateRandomNumber();
+
+        // Submit guess logic
+        function submitGuess() {
+            const userGuess = parseInt(document.getElementById('guess').value);
+            const result = document.getElementById('result');
+
+            if (!userGuess || userGuess < 1 || userGuess > range) {
+                result.textContent = `Please enter a valid number between 1 and ${range}`;
+                result.className = "output lost";
+                return;
+            }
+
+            if (userGuess === randomNumber) {
+                result.textContent = "Winner! 🎉 You guessed the number!";
+                result.className = "output";
+            } else {
+                result.textContent = `Loser 😢! The correct number was ${randomNumber}`;
+                result.className = "output lost";
+            }
+        }
+
+        // Reset game logic
+        function resetGame() {
+            document.getElementById('range').value = 20;
+            document.getElementById('guess').value = '';
+            document.getElementById('result').textContent = "Start guessing...";
+            document.getElementById('result').className = "output";
+            generateRandomNumber();
+        }
+    </script>
+</body>
+</html>
