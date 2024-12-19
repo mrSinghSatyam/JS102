@@ -1,2 +1,3 @@
-let a = 6.023
-console.log(a!==6.0023)
+let num = (N) => {
+    if(num)
+}
