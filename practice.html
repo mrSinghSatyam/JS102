@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#result {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unit Converter</h1>
+        <form id="converterForm">
+            <label for="parameter">Select Parameter:</label>
+            <select id="parameter" name="parameter">
+                <option value="length">Length</option>
+                <option value="mass">Mass</option>
+            </select>
+            <label for="value">Enter Value:</label>
+            <input type="number" id="value" name="value" required>
+            <label for="fromUnit">From Unit:</label>
+            <input type="text" id="fromUnit" name="fromUnit" required>
+
+            <label for="toUnit">To Unit:</label>
+            <input type="text" id="toUnit" name="toUnit" required>
+
+        </form>
+        <div id="result">Converted value will appear here.</div>
+    </div>
+    <script>
+        document.querySelectorAll('#parameter, #value, #fromUnit, #toUnit').forEach(input => {
+            input.addEventListener('input', () => {
+                const parameter = document.getElementById("parameter").value;
+                const value = parseFloat(document.getElementById("value").value);
+                const fromUnit = document.getElementById("fromUnit").value.toLowerCase();
+                const toUnit = document.getElementById("toUnit").value.toLowerCase();
+
+                if (!isNaN(value) && fromUnit && toUnit) {
+                    const conversion = unitConverter(parameter, value, fromUnit, toUnit);
+                    document.getElementById("result").textContent = conversion;
+                }
+            });
+        });
+
+        function unitConverter(parameter, value, fromUnit, toUnit) {
+            const lengthUnits = {
+                meters: 1,
+                kilometers: 1000,
+                centimeters: 0.01,
+                millimeters: 0.001,
+                miles: 1609.34,
+                yards: 0.9144,
+                feet: 0.3048,
+                inches: 0.0254
+            };
+
+            const massUnits = {
+                kilograms: 1,
+                grams: 0.001,
+                milligrams: 0.000001,
+                pounds: 0.453592,
+                ounces: 0.0283495
+            };
+
+            let units;
+            if (parameter === "length") units = lengthUnits;
+            else if (parameter === "mass") units = massUnits;
+            else return "Invalid parameter";
+
+            if (units[fromUnit] && units[toUnit]) {
+                const result = (value * units[fromUnit]) / units[toUnit];
+                return `${value} ${fromUnit} is equal to ${result.toFixed(4)} ${toUnit}`;
+            } else {
+                return "Invalid units";
+            }
+        }
+    </script>
+</body>
+</html>
