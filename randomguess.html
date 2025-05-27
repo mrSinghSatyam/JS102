@@ -82,7 +82,7 @@
 
     <script>
         let randomNumber = 0;
-        let range = 20;
+        let range = 100;
 
         // Generate a random number
         function generateRandomNumber() {
@@ -116,7 +116,7 @@
 
         // Reset game logic
         function resetGame() {
-            document.getElementById('range').value = 100;
+            document.getElementById('range').value = 8;
             document.getElementById('guess').value = '';
             document.getElementById('result').textContent = "Start guessing...";
             document.getElementById('result').className = "output";
